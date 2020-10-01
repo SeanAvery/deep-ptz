@@ -1,5 +1,5 @@
 import numpy as np
-from controls.Verifocal import Focuser
+from controls.Varifocal import Focuser
 
 class Manager():
     def __init__(self):
