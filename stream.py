@@ -1,5 +1,5 @@
 import cv2
-from controls.Verifocal import Focuser
+from autofocus.Manager import Manager
 
 if __name__ == '__main__':
     pipeline = (
@@ -8,6 +8,7 @@ if __name__ == '__main__':
         "videoconvert ! video/x-raw, format=(string)BGR !"
         "appsink"        
     )
+    env = Manager()
     cap = cv2.VideoCapture(pipeline, cv2.CAP_GSTREAMER)
     if cap.isOpened():
         while True:
@@ -17,6 +18,9 @@ if __name__ == '__main__':
             proc = frame.copy()
             proc = cv2.Laplacian(frame, cv2.CV_64F)
             score = cv2.mean(proc)[0]
+            cmd = env.choose_action()
+            print('cmd', cmd)
+            env.move(cmd)
             print('proc score', score)
             cv2.imshow("Raw", frame)
             cv2.imshow("Proc", proc)

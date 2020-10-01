@@ -1,23 +1,3 @@
-'''
-    Arducam programable zoom-lens control component.
-    Copyright (c) 2019-4 Arducam <http://www.arducam.com>.
-    Permission is hereby granted, free of charge, to any person obtaining a copy
-    of this software and associated documentation files (the "Software"), to deal
-    in the Software without restriction, including without limitation the rights
-    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-    copies of the Software, and to permit persons to whom the Software is
-    furnished to do so, subject to the following conditions:
-    The above copyright notice and this permission notice shall be included in all
-    copies or substantial portions of the Software.
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-    EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-    MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-    IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-    DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-    OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
-    OR OTHER DEALINGS IN THE SOFTWARE.
-'''
-
 import sys
 import time
 class Focuser:
@@ -125,6 +105,33 @@ class Focuser:
         self.write(self.CHIP_I2C_ADDR,info["REG_ADDR"],value)
         if flag & 0x01 != 0:
             self.waitingForFree()
+    def move(self, cmd):
+        print('hit move')
+        # zoom in
+        if cmd == 0:
+            val = self.get(self.OPT_ZOOM) + 10
+            if val > 18000:
+                val = 18000
+            print('val', val)
+            self.set(self.OPT_ZOOM, val)
+        # zoom out
+        if cmd == 1:
+            val = self.get(self.OPT_ZOOM) - 10
+            if val < 0:
+                val = 0
+            self.set(self.OPT_ZOOM, val)
+        # focus in
+        if cmd == 2:
+            val = self.get(self.OPT_FOCUS) + 10
+            if val > 18000:
+                val = 18000
+            self.set(self.OPT_FOCUS, val)
+        # focus out
+        if cmd == 3:
+            val = self.get(self.OPT_FOCUS) - 10
+            if val < 0:
+                val = 0
+            self.set(self.OPT_FOCUS, val)
 
 pass 
 
@@ -132,10 +139,18 @@ pass
 def test():
     focuser = Focuser(1)
     focuser.reset(Focuser.OPT_FOCUS)
-    while focuser.get(Focuser.OPT_FOCUS) < 18000:
-        focuser.set(Focuser.OPT_FOCUS,focuser.get(Focuser.OPT_FOCUS) + 50)
-    focuser.set(Focuser.OPT_FOCUS,0)
-    focuser.set(Focuser.OPT_FOCUS,10000)
+    focuser.reset(Focuser.OPT_ZOOM)
+    # sys.exit(0)
+    # while focuser.get(Focuser.OPT_FOCUS) < 18000:
+    #     focuser.set(Focuser.OPT_FOCUS,focuser.get(Focuser.OPT_FOCUS) + 50)
+    # focuser.set(Focuser.OPT_FOCUS,0)
+    # focuser.set(Focuser.OPT_FOCUS, 12000)
+    # focuser.set(Focuser.OPT_ZOOM, 12000)
+    import random
+    import time
+    while True:
+        focuser.move(random.randint(0, 3))
+
 pass
 
 if __name__ == "__main__":
