@@ -105,31 +105,31 @@ class Focuser:
         self.write(self.CHIP_I2C_ADDR,info["REG_ADDR"],value)
         if flag & 0x01 != 0:
             self.waitingForFree()
-    def move(self, cmd):
+    def move(self, cmd, counter):
         print('hit move:', cmd)
         # zoom in
         val = 0
         if cmd == 0:
-            val = self.get(self.OPT_ZOOM) + 100
+            val = self.get(self.OPT_ZOOM) + counter
             if val > 18000:
                 val = 18000
             print('val', val)
             self.set(self.OPT_ZOOM, val)
         # zoom out
         if cmd == 1:
-            val = self.get(self.OPT_ZOOM) - 100
+            val = self.get(self.OPT_ZOOM) - counter
             if val < 0:
                 val = 0
             self.set(self.OPT_ZOOM, val)
         # focus in
         if cmd == 2:
-            val = self.get(self.OPT_FOCUS) + 100
+            val = self.get(self.OPT_FOCUS) + counter
             if val > 18000:
                 val = 18000
             self.set(self.OPT_FOCUS, val)
         # focus out
         if cmd == 3:
-            val = self.get(self.OPT_FOCUS) - 100
+            val = self.get(self.OPT_FOCUS) - counter
             if val < 0:
                 val = 0
             self.set(self.OPT_FOCUS, val)
