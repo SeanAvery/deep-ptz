@@ -106,32 +106,34 @@ class Focuser:
         if flag & 0x01 != 0:
             self.waitingForFree()
     def move(self, cmd):
-        print('hit move')
+        print('hit move:', cmd)
         # zoom in
+        val = 0
         if cmd == 0:
-            val = self.get(self.OPT_ZOOM) + 10
+            val = self.get(self.OPT_ZOOM) + 100
             if val > 18000:
                 val = 18000
             print('val', val)
             self.set(self.OPT_ZOOM, val)
         # zoom out
         if cmd == 1:
-            val = self.get(self.OPT_ZOOM) - 10
+            val = self.get(self.OPT_ZOOM) - 100
             if val < 0:
                 val = 0
             self.set(self.OPT_ZOOM, val)
         # focus in
         if cmd == 2:
-            val = self.get(self.OPT_FOCUS) + 10
+            val = self.get(self.OPT_FOCUS) + 100
             if val > 18000:
                 val = 18000
             self.set(self.OPT_FOCUS, val)
         # focus out
         if cmd == 3:
-            val = self.get(self.OPT_FOCUS) - 10
+            val = self.get(self.OPT_FOCUS) - 100
             if val < 0:
                 val = 0
             self.set(self.OPT_FOCUS, val)
+        print('val', val)
 
 pass 
 
