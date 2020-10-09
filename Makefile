@@ -1,4 +1,4 @@
-autofocus:
+focus:
 	python3 stream.py
 quick_view:
 	bash ./view.sh

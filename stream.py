@@ -10,6 +10,7 @@ if __name__ == '__main__':
         "appsink"        
     )
     env = Manager()
+    print('here')
     cap = cv2.VideoCapture(pipeline, cv2.CAP_GSTREAMER)
     if cap.isOpened():
         prev_score = 0
