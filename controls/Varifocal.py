@@ -4,7 +4,6 @@ class Focuser:
     bus = None
     CHIP_I2C_ADDR = 0x0C
     BUSY_REG_ADDR = 0x04
-
     starting_point = [
         11000, 10000, 10000, 
         10000, 10000, 9800, 
